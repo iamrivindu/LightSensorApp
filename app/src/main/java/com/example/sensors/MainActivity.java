@@ -12,10 +12,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnClickListener {
+
+    private Button button;
     private SensorManager sensorManager;
     private Sensor lightSensor;
     private TextView text;
-    private Button button;
     private ProgressBar progressBar;
     private boolean running = false;
 
@@ -31,16 +32,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         button = (Button)findViewById(R.id.Start_1);
         button.setOnClickListener(this);
-        button.setText("Start");
+        button.setText("START");
         progressBar = (ProgressBar)findViewById(R.id.progressbarID);
 
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        text.setText("LIGHT: " + event.values[0]);
-        progressBar.setProgress((int)event.values[0]);
     }
 
     @Override
@@ -49,16 +43,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        text.setText("LIGHT LEVEL: " + event.values[0]);
+        progressBar.setProgress((int)event.values[0]);
+    }
+
+    @Override
     public void onClick(View v) {
         if(running) {
             running = false;
-            button.setText("Start");
+            button.setText("START");
             sensorManager.unregisterListener(this);                 //unregister the listener
 
 
         } else {
             running = true;
-            button.setText("Stop");
+            button.setText("STOP");
             sensorManager.registerListener(this,lightSensor,SensorManager.SENSOR_DELAY_NORMAL);  //register the listener
 
         }
